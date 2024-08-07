@@ -1,0 +1,48 @@
+services:
+  frontend:
+    build:
+      dockerfile_inline: |
+        FROM node:20.9.0
+        
+        WORKDIR /usr/local/app/frontend
+
+        COPY ./frontend/package*.json /usr/local/app/frontend/
+
+        RUN npm install
+
+        COPY . .
+
+        CMD ["npm", "start"]
+
+    working_dir: /usr/local/app/frontend
+    volumes:
+      - ./frontend:/usr/local/app/frontend
+    ports:
+      - 3000:3000
+
+  backend:
+    build:
+      dockerfile_inline: |
+        FROM node:20.9.0
+
+        WORKDIR /usr/local/app/backend
+
+        COPY ./backend/package*.json /usr/local/app/backend/
+        COPY ./backend/prisma/schema.prisma /usr/local/app/backend/prisma/
+        COPY ./backend/prisma/seed.js /usr/local/app/backend/prisma/
+        COPY ./backend/.env /usr/local/app/backend/        
+        
+        RUN npm install
+
+        COPY . .
+
+        RUN npx prisma migrate dev --name init && \
+            npx prisma db seed
+
+        CMD ["npm", "start"]
+    
+    volumes:
+      - ./backend:/usr/local/app/backend
+    working_dir: /usr/local/app/backend
+    ports:
+      - 8000:8000
