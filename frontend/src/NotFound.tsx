@@ -8,7 +8,7 @@ function NotFound() {
   return (
     <div className="h-screen grid mx-auto">
       <div>
-        <button type="button" className="flex" onClick={() => navigate(-1)}><IoMdArrowBack className="mt-1" />Back</button>      
+        <button type="button" className="flex" onClick={() => navigate("/")}><IoMdArrowBack className="mt-1" />Back</button>      
       </div>
       <div className="w-1/2 place-self-center">
         <h1 className="text-center text-5xl">404 Not Found</h1>

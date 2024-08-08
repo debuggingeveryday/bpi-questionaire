@@ -55,4 +55,23 @@ router.get('/status', async function(req, res, next) {
   })
 })
 
+router.get('/export', async function(req, res, next) {
+  const data = await prisma.questionaire.findMany()
+
+  res.json(data)
+})
+
+router.post('/reset', async function(req, res, next) {
+  const reset = req.body.reset;
+
+  if (reset) {
+    // TODO: update this to non raw sql method
+    const [updateQuestionaire] = await prisma.$transaction([
+      prisma.$executeRaw`UPDATE Questionaire SET isDirty = FALSE, answer = FALSE WHERE id NOT NULL;`,
+    ])
+
+    res.json({message: "success"})
+  }
+})
+
 module.exports = router;
