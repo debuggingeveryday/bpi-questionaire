@@ -3,6 +3,8 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { IoArrowForwardSharp } from "react-icons/io5";
 import { IoMdArrowBack } from "react-icons/io";
 import * as XLSX from 'xlsx'
+import { useStoreContext } from '../../Store/Store'
+import { FaHome } from "react-icons/fa";
 
 // TODO: create constants directory and file
 const URL = "http://localhost:8000/questionaires"
@@ -27,6 +29,7 @@ function Questionaire() {
   const [showNext, setShowNext] = useState(false)
   const [showPrevious, setShowPrevious] = useState(false)
   const [showSubmit, setShowSubmit] = useState(false)
+  const {showAlertSuccess, updateShowAlertSuccess} = useStoreContext()
 
   useEffect(() => {
     // TODO: refractor to destructuring object
@@ -35,12 +38,17 @@ function Questionaire() {
     if (id) {
       setShowNext(id >= data?.total)
       setShowPrevious(parseInt(id) <= 1)
-      setShowSubmit(data?.countAnswered === data?.total)
+      if (data) setShowSubmit(data?.countAnswered === data?.total)
     }
     //if (isFinish) navigate('/finished')
     
     return () => {}
   }, [questionaireStatus])
+  
+  useEffect(() => {
+    if (showSubmit === true) updateShowAlertSuccess()
+
+  }, [showSubmit])
   
 
   const fetchQuestionaire = async () => {
@@ -142,6 +150,8 @@ function Questionaire() {
   }
 
   return (
+    <>
+    <Link className="ml-5 hover:underline flex" to={"/"}><FaHome className="mt-1 mr-1" />Home</Link>
     <div className="h-screen grid">
       <div className="w-2/3 mx-auto place-self-center">
         <div className="grid grid-cols-2 justify-between">
@@ -168,6 +178,7 @@ function Questionaire() {
         </div>
       </div>
     </div>
+    </>
   );
 }
 

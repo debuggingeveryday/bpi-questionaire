@@ -21,6 +21,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+/* I comment this for tauri so that frontend will display in software application */
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);

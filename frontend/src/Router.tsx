@@ -46,11 +46,11 @@ const Router = () => {
           key={location.pathname}
           nodeRef={nodeRef}
           timeout={300}
-          classNames="animate-fade"
+          classNames="animate-fade-in"
           unmountOnExit
         >
           {(state) => (
-            <div ref={nodeRef} className="animate-fade">
+            <div ref={nodeRef} className="animate-fade-in">
               {currentOutlet}
             </div>
           )}

@@ -3,13 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { useStoreContext } from '../../Store/Store'
 
 const URL = "http://localhost:8000/questionaires"
+const STATUS_OK = 200
 
 function Welcome() {
-  const { test, updateTest } = useStoreContext();
+  const { updateShowAlertWarn } = useStoreContext();
   let navigate = useNavigate();
 
   const resetTest = async () => {
-    const response = await fetch(`${URL}/reset`, {
+    const { status } = await fetch(`${URL}/reset`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -19,6 +20,8 @@ function Welcome() {
         reset: true,
       })
     })
+
+    if (status === STATUS_OK) updateShowAlertWarn()
   }
 
   useEffect(() => {
