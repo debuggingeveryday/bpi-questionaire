@@ -1,34 +1,20 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import { useStoreContext } from '../../Store/Store'
+import { useStoreContext } from '../../Store/Store';
 
 const URL = "http://localhost:8000/questionaires"
 const STATUS_OK = 200
 
 function Welcome() {
-  const { updateShowAlertWarn } = useStoreContext();
+  const { updateShowAlertWarn, resetQuestion } = useStoreContext();
+  const [sample, setSample] = useState()
   let navigate = useNavigate();
 
   const resetTest = async () => {
-    const { status } = await fetch(`${URL}/reset`, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        reset: true,
-      })
-    })
-
-    if (status === STATUS_OK) updateShowAlertWarn()
+    updateShowAlertWarn()
+    resetQuestion()
+    //updateTest()
   }
-
-  useEffect(() => {
-    
-
-    return () => {}
-  }, [])
   
   return (
     <div className="grid place-content-center items-center h-screen">

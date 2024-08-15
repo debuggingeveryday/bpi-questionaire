@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@prisma/client": "^5.17.0",
+    "@tauri-apps/api": "^1.6.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -19,7 +20,7 @@
     "xlsx": "^0.18.5"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "dev": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -44,6 +45,7 @@
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.7",
+    "@tauri-apps/cli": "^1.6.0",
     "@types/node": "^22.0.0",
     "@types/react-transition-group": "^4.4.10",
     "autoprefixer": "^10.4.19",
