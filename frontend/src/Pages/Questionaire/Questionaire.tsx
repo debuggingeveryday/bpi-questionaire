@@ -49,8 +49,6 @@ function Questionaire() {
       setShowSubmit(countAnswered === total)
     }
 
-    //if (isFinish) navigate('/finished')
-    
     return () => {}
   }, [statusQuestion])
   

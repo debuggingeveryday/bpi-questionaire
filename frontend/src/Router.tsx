@@ -1,12 +1,8 @@
-import React, { createRef, useState, useMemo, useEffect } from 'react';
-import { IoMdArrowBack } from "react-icons/io";
+import React, { createRef } from 'react';
 import { 
   createBrowserRouter,
-  NavLink,
   useLocation,
   useOutlet,
-  useParams,
-  useNavigate,
 } from 'react-router-dom';
 import { CSSTransition, SwitchTransition } from 'react-transition-group'
 
@@ -23,19 +19,10 @@ const routes = [
 ]
 
 const Router = () => {
-  const { id } = useParams();
   const location = useLocation()
   const currentOutlet = useOutlet()
-  const navigate = useNavigate()
   const { nodeRef }: any = routes.find((route) => route.path === location.pathname) ?? {}
-  const [ questionId, setQuestionId ] = useState(0);
 
-  const proceed = (() => {
-    if (!id) throw "Error"
-
-    navigate(`/questionaire/${parseInt(id) + 1}`)
-  })
-  
   return (
     <>
       <div className="grid grid-cols-2">

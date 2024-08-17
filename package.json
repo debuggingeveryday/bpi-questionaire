@@ -3,15 +3,10 @@
     "@tauri-apps/cli": "^1.6.0"
   },
   "scripts": {
-    "backend-dev": "cd ./backend && npm run start",
-    "frontend-dev": "cd ./frontend && npm run start",
-    "backend-build": "cd ./backend && npm run start",
+    "frontend-dev": "cd ./frontend && npm run dev",
     "frontend-build": "cd ./frontend && npm run build",
-    "dev": "concurrently \"npm run frontend-dev\" \"npm run backend-build\"",
-    "build": "concurrently \"npm run frontend-build\"",
-    "tauri": "npx tauri"
-  },
-  "dependencies": {
-    "concurrently": "^8.2.2"
+    "dev": "npm run frontend-dev",
+    "build": "npm run frontend-build",
+    "tauri": "WEBKIT_DISABLE_DMABUF_RENDERER=1 npx tauri"
   }
 }
