@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { desktopDir } from '@tauri-apps/api/path';
 import { IoArrowForwardSharp } from "react-icons/io5";
 import { IoMdArrowBack } from "react-icons/io";
 import * as XLSX from 'xlsx'
@@ -29,11 +28,13 @@ function Questionaire() {
     test,
     question,
     updateTest,
+   
+    showAlert,
+    updateShowAlert,
+
+    statusQuestion,
     answerQuestion,
     updateQuestion,
-    showAlertSuccess,
-    updateShowAlertSuccess,
-    statusQuestion,
     updateStatusQuestion,
     resetQuestion
   } = useStoreContext()
@@ -54,7 +55,13 @@ function Questionaire() {
   }, [statusQuestion])
   
   useEffect(() => {
-    if (showSubmit === true) updateShowAlertSuccess()
+    if (showSubmit === true)
+      updateShowAlert({
+        show: true,
+        color: 'bg-green-400',
+        title: 'Done!',
+        message: 'Done questionaire now you can export the file!'
+      })
 
   }, [showSubmit])
   
@@ -133,14 +140,16 @@ function Questionaire() {
       date.getSeconds(),
     ];
 
-    const desktopPath = await desktopDir();
-
-    const fileName = `${desktopPath}${year}${month}${day}${hour}${minutes}${seconds}_bpi-result.xlsx`
-
-    updateTest(fileName)
+    const fileName = `${year}${month}${day}${hour}${minutes}${seconds}_bpi-result.xlsx`
 
     XLSX.writeFile(workbook, fileName, { compression: true });
 
+    updateShowAlert({
+      show: true,
+      color: 'bg-green-400',
+      title: 'Exported result!',
+      message: 'Exported file successfully!'
+    })
 
     initializeQuestionaire()
   }

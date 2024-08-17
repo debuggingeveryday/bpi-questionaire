@@ -15,7 +15,7 @@ const Alert = (props: any) => {
       </div>
       <div>
         <div className="font-bold text-2xl">{props.title || ""}</div>
-        <div className="text-lg">{props.description || ""}</div>
+        <div className="text-lg">{props.message || ""}</div>
       </div>
       </div>
     </div>

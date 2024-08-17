@@ -6,14 +6,21 @@ const URL = "http://localhost:8000/questionaires"
 const STATUS_OK = 200
 
 function Welcome() {
-  const { updateShowAlertWarn, resetQuestion } = useStoreContext();
+  const { showAlert, updateShowAlert, resetQuestion } = useStoreContext();
   const [sample, setSample] = useState()
   let navigate = useNavigate();
 
-  const resetTest = async () => {
-    updateShowAlertWarn()
+  const resetTest = () => {
+    updateShowAlert({
+      show: true,
+      color: 'bg-yellow-500',
+      title: 'Questionaire reset!',
+      message: 'questionaire has been reset'
+    })
+
+    console.log(showAlert)
+
     resetQuestion()
-    //updateTest()
   }
   
   return (
