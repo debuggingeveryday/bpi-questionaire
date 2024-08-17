@@ -1,13 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React from 'react';
 import { useNavigate } from "react-router-dom";
 import { useStoreContext } from '../../Store/Store';
 
-const URL = "http://localhost:8000/questionaires"
-const STATUS_OK = 200
-
 function Welcome() {
   const { showAlert, updateShowAlert, resetQuestion } = useStoreContext();
-  const [sample, setSample] = useState()
   let navigate = useNavigate();
 
   const resetTest = () => {

@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import { initialize, getQuestionaire, updateQuestionaire, migrateFresh } from '../Data/index'
 
 initialize()
@@ -12,10 +10,10 @@ export const findById = (id: number) => {
 }
 
 /* -- answer -- */
-export const answerQuestionaire = (id: any, value: boolean) => {
+export const answerQuestionaire = (id: number, value: boolean) => {
   if (!id) throw "no value"
 
-  let newData: any = findById(parseInt(id))
+  let newData: any = findById(id)
   
   newData.answer = value
   newData.isDirty = true
@@ -26,9 +24,19 @@ export const answerQuestionaire = (id: any, value: boolean) => {
 }
 
 ///* -- Status -- */
-export const statusQuestionaire = (statusData) => {
+
+interface IQuestionaires {
+  id: number;
+  questions: string;
+  answer: boolean;
+  isDirty: boolean;
+  length: number;
+  filter: any;
+}
+
+export const statusQuestionaire = (statusData: IQuestionaires) => {
   let total = statusData.length
-  let countAnswered = statusData.filter(item => item.isDirty === true).length
+  let countAnswered = statusData.filter((item: IQuestionaires) => item.isDirty === true).length
 
   return {
     total,
