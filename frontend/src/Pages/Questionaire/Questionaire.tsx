@@ -1,13 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { IoArrowForwardSharp } from "react-icons/io5";
 import { IoMdArrowBack } from "react-icons/io";
 import * as XLSX from 'xlsx'
 import { useStoreContext } from '../../Store/Store'
 import { FaHome } from "react-icons/fa";
-//import { answerQuestion } from "../../Data/questionaire"
+
 // TODO: create constants directory and file
-const URL = "http://localhost:8000/questionaires"
 const STYLE_CLASS = {
   activeButton: "text-slate-100 bg-slate-900",
   nonActiveButton: "bg-white text-slate-900",
@@ -16,41 +15,33 @@ const STYLE_CLASS = {
 function Questionaire() {
   let { id } = useParams()
   const navigate = useNavigate()
-  const [questionaireId, setQuestionaireId] = useState(id ? parseInt(id) : null)
+  const [questionaireId] = useState(id ? +id : null)
   const [questionTitle, setQuestionTitle] = useState('')
   const [answer, setAnswer] = useState()
   const [isDirty, setIsDirty] = useState()
-  const [isFinish, setIsFinish] = useState(false)
   const [showNext, setShowNext] = useState(false)
   const [showPrevious, setShowPrevious] = useState(false)
   const [showSubmit, setShowSubmit] = useState(false)
   const {
     test,
     question,
-    updateTest,
-   
-    showAlert,
     updateShowAlert,
-
     statusQuestion,
     answerQuestion,
-    updateQuestion,
     updateStatusQuestion,
-    resetQuestion
   } = useStoreContext()
 
   useEffect(() => {
-    // TODO: refractor to destructuring object
     const { countAnswered, total } = statusQuestion;
 
-    if (id) {
-      setShowNext(id >= total)
-      setShowPrevious(+id <= 1)
+    if (questionaireId) {
+      setShowNext(questionaireId >= total)
+      setShowPrevious(questionaireId <= 1)
       setShowSubmit(countAnswered === total)
     }
 
     return () => {}
-  }, [statusQuestion])
+  }, [questionaireId, statusQuestion])
   
   useEffect(() => {
     if (showSubmit === true)
@@ -61,7 +52,7 @@ function Questionaire() {
         message: 'Done questionaire now you can export the file!'
       })
 
-  }, [showSubmit])
+  }, [questionaireId, showSubmit])
   
 
   const fetchQuestionaire = () => {
@@ -80,11 +71,10 @@ function Questionaire() {
   }
 
   const answerQuestionaire = async (value: any) => {
-    if (!id) throw new Error("No value id and answer")
-    answerQuestion(+id, value)
+    if (!questionaireId) throw new Error("No value id and answer")
+    answerQuestion(+questionaireId, value)
     fetchQuestionaire();
     updateStatusQuestion()
-    //fetchQuestionaireStatus();
   }
 
   const initializeQuestionaire = () => {

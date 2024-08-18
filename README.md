@@ -26,3 +26,9 @@ npm run tauri dev
 /* For build
 npm run tauri build
 ```
+
+# Testing
+
+```
+
+```

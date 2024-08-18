@@ -109,6 +109,7 @@ const QUESTIONAIRES: Array<string> = [
 'My memory is as good as it ever was. ',
 'I often take risks without stopping to think of the results. ',
 'I dislike going out alone. ',
+' Poeple are better off with me,',
 'I frequently experience terrible headaches. ',
 'I often have pains in odd parts of my body. ',
 'Something interesting happens to me almost every day. ',
@@ -210,7 +211,38 @@ const QUESTIONAIRES: Array<string> = [
 'I am usually a happy person. ',
 'I\'ve never let down a friend in any way. ',
 'I do not easily lose patience with others. ',
+'Most people do what they can to help others.',
 'I\'m usually the first to be blamed if something goes wrong. ',
+'Things that upset other people usually do not bother me. ',
+'I cannot separate my daydreams from the real world.',
+'I have a well thought out reason for almost everything I undertake.',
+'I like to keep my ideas to myself.',
+'I consider myself to be a generous and pleasant person.',
+'I have been planning to do away with myself.',
+'I never feel faint.',
+'Recent events have made me feel downhearted and miserable.',
+'Sometimes I deliberately avoid a person I dislike.',
+'I get very irritated when someone disagrees with me.',
+'I sometimes have fun teasing animals.',
+'No one is trying to ruin my life.',
+'When I visit a strange place I become very upset.',
+'I can easily understand simple directions.',
+'I find it exciting to drive in a fast car.',
+'I enjoy doing things with friends whenever I am able.',
+'I am not the type of person one remembers after one meeting. ',
+'I do not care for anyone very much.',
+'I get a lot of headaches.',
+'I believe that I shall have my share of good luck.',
+'I always meet my responsibilities.',
+'No one could ever say that I am hot-tempered.',
+'Sooner or later people who break the law get caught.',
+'If certain individuals had not interfered, I would be more successful today.',
+'I do not panic more quickly than the average person.',
+'Many times I can hear mysterious voices all around me.',
+'I seldom do silly things without thinking.',
+'I make little effort to meet new people.',
+'Much of what I say is worth paying attention to.',
+'I always have difficulty sleeping.'
 ];
 
 /* TODO: restructure and remove DRY */
@@ -224,11 +256,6 @@ export const loadQuestionaire = () => {
       answer: false
     }
   })
-}
-
-const STATUS = {
-  total: 0,
-  countAnswered: 0
 }
 
 export const initialize = () => {
@@ -251,3 +278,4 @@ export const getQuestionaire = () => {
 export const updateQuestionaire = (data: any) => {
   localStorage.setItem("questionaire", JSON.stringify(data))
 }
+
