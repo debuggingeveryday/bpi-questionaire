@@ -1,3 +1,3 @@
 # BPI QUESTIONAIRE
 
-prisma + react + sqlite
+react + tauri
