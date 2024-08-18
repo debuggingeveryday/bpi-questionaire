@@ -14,8 +14,6 @@ function Welcome() {
       message: 'questionaire has been reset'
     })
 
-    console.log(showAlert)
-
     resetQuestion()
   }
   

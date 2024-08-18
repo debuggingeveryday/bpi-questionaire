@@ -61,6 +61,7 @@ export default function Store({children}: {children: any}) {
 
   const [ statusQuestion, setStatusQuestion ] = useState(statusQuestionaire(question))
 
+
   useEffect(() => {
     //console.log(findById(1))
   }, [])
@@ -104,6 +105,7 @@ export default function Store({children}: {children: any}) {
 
     setStatusQuestion(statusQuestionaire(question))
     resetQuestionaire()
+
   }
 
   const storeState = {
