@@ -33,6 +33,10 @@ interface IStoreContext {
   statusQuestion: any;
   updateStatusQuestion: () => void;
   resetQuestion: () => void;
+
+  // Skipped answer collector
+  skipAnswer: Array<number>,
+  updateSkipAnswer: (value: number) => void
 }
 
 export const StoreContext = createContext<IStoreContext>({
@@ -49,17 +53,19 @@ export const StoreContext = createContext<IStoreContext>({
   answerQuestion: (id, value) => {},
   statusQuestion: {},
   updateStatusQuestion: () => {},
-  resetQuestion: () => {}
+  resetQuestion: () => {},
+
+  // Skipped answer collector
+  skipAnswer: [],
+  updateSkipAnswer: (value: number) => {}
 });
 
 export default function Store({children}: {children: any}) {
   const [ test, setTest ] = useState();
-  
-  const [showAlert, setShowAlert] = useState({})
-
-  const [ question, setQuestion] = useState(getAllQuestionaire)
-
+  const [ showAlert, setShowAlert ] = useState({})
+  const [ question, setQuestion ] = useState(getAllQuestionaire)
   const [ statusQuestion, setStatusQuestion ] = useState(statusQuestionaire(question))
+  const [ skipAnswer, setSkipAnswer ] = useState<Array<number>>([])
 
 
   useEffect(() => {
@@ -108,6 +114,10 @@ export default function Store({children}: {children: any}) {
 
   }
 
+  const updateSkipAnswer = (value: number) => {
+    setSkipAnswer(prev => [...prev, value])
+  }
+
   const storeState = {
     test,
     updateTest,
@@ -122,7 +132,11 @@ export default function Store({children}: {children: any}) {
     answerQuestion,
     updateStatusQuestion,
     statusQuestion,
-    resetQuestion
+    resetQuestion,
+
+    // Skipped answered
+    skipAnswer,
+    updateSkipAnswer
   }
 
   return (
