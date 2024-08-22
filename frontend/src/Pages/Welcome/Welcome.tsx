@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useStoreContext } from '../../Store/Store';
 
 function Welcome() {
-  const { showAlert, updateShowAlert, resetQuestion } = useStoreContext();
+  const { showAlert, updateShowAlert, resetQuestion, updateShowUploadFileResult } = useStoreContext();
   let navigate = useNavigate();
 
   const resetTest = () => {
@@ -20,7 +20,7 @@ function Welcome() {
   return (
     <>
       <div>
-        <button type="button">Upload result</button>
+        <button type="button" onClick={updateShowUploadFileResult}>Upload result</button>
       </div>
       <div className="grid place-content-center items-center h-screen">
         <div className="grid gap-y-5">

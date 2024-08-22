@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { IoArrowForwardSharp } from "react-icons/io5";
 import { IoMdArrowBack } from "react-icons/io";
-import * as XLSX from 'xlsx'
 import { useStoreContext } from '../../Store/Store'
 import { FaHome } from "react-icons/fa";
 import { saveAs } from 'file-saver'
@@ -128,7 +127,8 @@ function Questionaire() {
     const passphrase = '123';
     const encryptedData = await CryptoJS.AES.encrypt(JSON.stringify(rows), passphrase).toString();
     const blob = new Blob([encryptedData], {type: "text/plain;charset=utf-8"});
-    saveAs(blob, "result.txt");
+    const fileName = `${month}${day}${year}${hour}${minutes}${seconds}_bpi-result.txt`
+    saveAs(blob, fileName);
    
     updateShowAlert({
       show: true,
