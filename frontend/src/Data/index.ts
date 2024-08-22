@@ -2,7 +2,13 @@
 
 /* -- MIGRATION -- */
 
-import QUESTIONAIRES from '../constants/questionaire'
+//import QUESTIONAIRES from '../constants/questionaire'
+
+const QUESTIONAIRES = [
+  "one",
+  "two",
+  "three"
+]
 
 /* TODO: restructure and remove DRY */
 
