@@ -6,9 +6,13 @@
   "scripts": {
     "frontend-dev": "cd ./frontend && npm run dev",
     "frontend-build": "cd ./frontend && npm run build",
-    "frontend-test": "cd ./frontend && npm run cypress:open",
+    "frontend-test": "concurrently --names \"frontend-dev,cypress-run\" \"npm run dev\" -c \"red,yellow\" \"cd ./frontend && npm run cypress:open\"",
     "dev": "npm run frontend-dev",
     "build": "npm run frontend-build",
-    "tauri": "WEBKIT_DISABLE_DMABUF_RENDERER=1 npx tauri"
+    "tauri-webkit-1": "WEBKIT_DISABLE_DMABUF_RENDERER=1 npx tauri",
+    "tauri": "npx tauri"
+  },
+  "dependencies": {
+    "concurrently": "^8.2.2"
   }
 }

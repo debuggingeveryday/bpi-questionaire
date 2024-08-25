@@ -15,8 +15,8 @@ describe('Full test', () => {
         answeredCount++
         const randomNumber = Math.floor(Math.random() * 2) + 1
 
-        if (randomNumber === 2) cy.get('.justify-self-end').click()
-        if (randomNumber === 1) cy.get('.justify-self-start').click()
+        if (randomNumber === 2) cy.get('.gap-x-16 > .justify-self-end').click()
+        if (randomNumber === 1) cy.get('.gap-x-16 > .justify-self-start').click()
 
         if (+maxPageCount !== answeredCount) cy.get('.place-self-end > .flex').click()
         cy.wait(500)
