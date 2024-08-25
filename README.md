@@ -30,5 +30,5 @@ npm run tauri build
 # Testing
 
 ```
-
+npm run frontend-test
 ```

@@ -15,6 +15,12 @@
       "path": {
         "all": true
       },
+      "dialog": {
+        "ask": true,
+        "save": true,
+        "open": true,
+        "message": true
+      },
       "all": false
     },
     "bundle": {

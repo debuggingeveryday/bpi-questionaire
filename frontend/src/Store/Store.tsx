@@ -18,11 +18,7 @@ interface IShowAlert {
 }
 
 interface IStoreContext {
-  test?: any;
-  updateTest: (value: any) => void;
-  
   // Alert
-
   showAlert: IShowAlert;
   updateShowAlert: (value: IShowAlert) => void;
 
@@ -33,12 +29,17 @@ interface IStoreContext {
   statusQuestion: any;
   updateStatusQuestion: () => void;
   resetQuestion: () => void;
+
+  // Skipped answer collector
+  skipAnswer: Array<number>,
+  updateSkipAnswer: (value: number) => void
+  
+  // Upload file test and decrypt
+  showUploadFileResult: boolean;
+  updateShowUploadFileResult: () => void;
 }
 
 export const StoreContext = createContext<IStoreContext>({
-  test: '',
-  updateTest: (value) => {},
-
   // Alert
   showAlert: {},
   updateShowAlert: (value: IShowAlert) => {},
@@ -49,18 +50,23 @@ export const StoreContext = createContext<IStoreContext>({
   answerQuestion: (id, value) => {},
   statusQuestion: {},
   updateStatusQuestion: () => {},
-  resetQuestion: () => {}
+  resetQuestion: () => {},
+
+  // Skipped answer collector
+  skipAnswer: [],
+  updateSkipAnswer: (value: number) => {},
+
+  // Upload file test and decrypt
+  showUploadFileResult: false,
+  updateShowUploadFileResult: () => {}
 });
 
 export default function Store({children}: {children: any}) {
-  const [ test, setTest ] = useState();
-  
-  const [showAlert, setShowAlert] = useState({})
-
-  const [ question, setQuestion] = useState(getAllQuestionaire)
-
+  const [ showAlert, setShowAlert ] = useState({})
+  const [ question, setQuestion ] = useState(getAllQuestionaire)
   const [ statusQuestion, setStatusQuestion ] = useState(statusQuestionaire(question))
-
+  const [ skipAnswer, setSkipAnswer ] = useState<Array<number>>([])
+  const [ showUploadFileResult, setShowUploadFileResult ] = useState(false)
 
   useEffect(() => {
     //console.log(findById(1))
@@ -87,8 +93,8 @@ export default function Store({children}: {children: any}) {
     setStatusQuestion(statusQuestionaire(question))
   }
 
-  const updateTest = (value: any) => {
-    setTest(value)
+  const updateShowUploadFileResult = () => {
+    setShowUploadFileResult(!showUploadFileResult)
   }
 
   const resetQuestion = () => {
@@ -108,10 +114,11 @@ export default function Store({children}: {children: any}) {
 
   }
 
+  const updateSkipAnswer = (value: number) => {
+    setSkipAnswer(prev => [...prev, value])
+  }
+
   const storeState = {
-    test,
-    updateTest,
-    
     // Alert
     showAlert,
     updateShowAlert,
@@ -122,7 +129,14 @@ export default function Store({children}: {children: any}) {
     answerQuestion,
     updateStatusQuestion,
     statusQuestion,
-    resetQuestion
+    resetQuestion,
+
+    // Skipped answered
+    skipAnswer,
+    updateSkipAnswer,
+
+    showUploadFileResult,
+    updateShowUploadFileResult
   }
 
   return (
