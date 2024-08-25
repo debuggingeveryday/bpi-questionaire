@@ -90,7 +90,7 @@ function Questionaire() {
 
 
   const next = (() => {
-    if (id) navigate(`/questionaire/${parseInt(id) + 1}`)
+    if (id && isDirty) navigate(`/questionaire/${parseInt(id) + 1}`)
   })
 
   const back = (() => {
@@ -148,7 +148,9 @@ function Questionaire() {
               <button className={`flex text-2xl hover:underline ${showPrevious ? "hidden" : ""}`} onClick={back}><IoMdArrowBack className="mt-1" />Previous</button>
             </div>
             <div className="place-self-end">
-              <button className={`flex text-2xl hover:underline ${showNext ? "hidden" : ""}`} onClick={next}>Next<IoArrowForwardSharp className="mt-1" /></button>
+              {isDirty && (
+                <button className={`flex text-2xl hover:underline ${showNext ? "hidden" : ""}`} onClick={next}>Next<IoArrowForwardSharp className="mt-1" /></button>
+              )}
             </div>
           </div>
 

@@ -12,8 +12,7 @@ export const loadQuestionaire = () => {
       id: index + 1,
       questions: value,
       isDirty: false,
-      answer: false,
-      skipped: false
+      answer: false
     }
   })
 }

@@ -13,11 +13,6 @@
     "tauri": "npx tauri"
   },
   "dependencies": {
-    "@types/crypto-js": "^4.2.2",
-    "@types/file-saver": "^2.0.7",
-    "archiver-zip-encrypted": "^2.0.0",
-    "concurrently": "^8.2.2",
-    "crypto-js": "^4.2.0",
-    "file-saver": "^2.0.5"
+    "concurrently": "^8.2.2"
   }
 }
