@@ -8,7 +8,7 @@ const InputFile = (props: any) => {
       className="flex bg-gray-800 hover:bg-gray-700 text-white text-base px-5 py-3 outline-none rounded w-max cursor-pointer mx-auto font-[sans-serif]">
         <IoMdCloudUpload className="text-xl mr-2 fill-white inline" />
           Upload
-        <input type="file" onChange={props.onChange} id="uploadFile1" className="hidden" />
+        <input type="file" accept=".txt,text/plain" onChange={props.onChange} id="uploadFile1" className="hidden" />
       </label>
     </>
   )

@@ -38,6 +38,8 @@ function Layout() {
 
   function onFileUpload(event: React.ChangeEvent<HTMLInputElement>) {
     const file: any = event.target.files;
+    
+    if (file[0].type !== "text/plain") return window.alert("Invalid file type")
 
     if (file) {
       let reader: any = new FileReader();
@@ -54,44 +56,57 @@ function Layout() {
 
   function calculate(result: ICurrentValue[]) {
     let initialValue = Object.keys(CLINICAL_SCALES).reduce<any>((total, currentValue, currentIndex, baseValue) => {
-      total[currentValue] = 0
+      total.push({
+        category: currentValue,
+        count: 0
+      })
 
       return total;
-    }, {})
+    }, [])
 
     let newResult = result.reduce<any>((total, currentValue, currentIndex, baseValue) => {
       const {index, answer, questions} = currentValue;
 
       Object.entries(CLINICAL_SCALES).forEach(([categoryName, {_true, _false}]: any) => {
-        if (_true.includes(index) && answer === true) total[categoryName]++
-        if (_false ? _false.includes(index) : false && answer === false) total[categoryName]++
+        const categoryIndex = total.indexOf(total.find((item: any) => item.category === categoryName))
+        
+        if (_true.includes(index) && answer === true) {
+          total[categoryIndex].count++
+        }
+        if (_false ? _false.includes(index) : false && answer === false) {
+          total[categoryIndex].count++
+        }
       });
-      
+
       return total;
     }, initialValue)
 
-    return newResult
+    return [newResult, result]
   }
 
   async function showResult () {
     const password: any = window.prompt("Enter password", "");
+    
+    if (!password) return
+    if (password !== process.env.REACT_APP_PASSPHASE) return window.alert("Invalid password")
 
-    if (password !== process.env.REACT_APP_PASSPHASE) window.alert("Incorrect password")
- 
     if (password && cypherText) {
-      const bytes = CryptoJS.AES.decrypt(cypherText, password);
-      const originalText = bytes.toString(CryptoJS.enc.Utf8);
-      
-      let finalResult = calculate(JSON.parse(originalText))
-      
-      const worksheet: any = await XLSX.utils.json_to_sheet([finalResult]);
-      const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, "BPI Result");
-      const [ fileName, _ ]: any = file?.name.split(".");
-      XLSX.writeFile(workbook, `${fileName}.xlsx`, { compression: true });
+      try {
+        const bytes = CryptoJS.AES.decrypt(cypherText, password);
+        const originalText = bytes.toString(CryptoJS.enc.Utf8);
+        
+        let [finalResult, answeredCollection] = calculate(JSON.parse(originalText))
 
-    } else {
-      window.alert("Enter password and upload file")
+        const worksheetFinalResult: any = await XLSX.utils.json_to_sheet(finalResult);
+        const worksheetAnsweredCollection: any = await XLSX.utils.json_to_sheet(answeredCollection)
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheetFinalResult, "BPI Result");
+        XLSX.utils.book_append_sheet(workbook, worksheetAnsweredCollection, "BPI Answered")
+        const [ fileName, _ ]: any = file?.name.split(".");
+        XLSX.writeFile(workbook, `${fileName}.xlsx`, { compression: true });
+      } catch (error) {
+        window.alert("Invalid format file")
+      }
     }
   }
   
