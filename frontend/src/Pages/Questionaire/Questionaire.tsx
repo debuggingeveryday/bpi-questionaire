@@ -85,8 +85,6 @@ function Questionaire() {
 
   useEffect(() => {
     initializeQuestionaire()
-
-    console.log("on load Questionaire.tsx")
     return () => console.log("clean up")
   }, [])
 
@@ -124,7 +122,7 @@ function Questionaire() {
       date.getSeconds(),
     ];
 
-    const passphrase = '123';
+    const passphrase: any = process.env.REACT_APP_PASSPHASE;
     const encryptedData = await CryptoJS.AES.encrypt(JSON.stringify(rows), passphrase).toString();
     const blob = new Blob([encryptedData], {type: "text/plain;charset=utf-8"});
     const fileName = `${month}${day}${year}${hour}${minutes}${seconds}_bpi-result.txt`

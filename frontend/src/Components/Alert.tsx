@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 const Alert = (props: any) => {
   return (
     <>
+    {/* TODO: make conditional component and replace this */}
     {props.showAlert ? (
     <div className={`fixed right-3 top-3 animate-fade-in rounded-lg w-[600px] h-32 text-[#ffffff] ${props.bgColor}`}>
       <div className="flex flex-row w-full gap-5 justify-center items-center px-5 w-full h-full">

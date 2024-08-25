@@ -1,18 +1,40 @@
 import React, { useEffect, useState } from 'react';
 import { RouterProvider } from "react-router-dom";
-import router from './Router'
-import Alert from './Components/Alert'
-import { useStoreContext } from './Store/Store'
-import Modal from './Components/Modal'
-import InputFile from './Components/InputFile'
+import router from './Router';
+import Alert from './Components/Alert';
+import { useStoreContext } from './Store/Store';
+import Modal from './Components/Modal';
+import InputFile from './Components/InputFile';
 import CryptoJS from 'crypto-js';
+import * as XLSX from 'xlsx';
+import * as CLINICAL_SCALES from './constants/clinical_scales';
+
+interface ICurrentValue {
+  index: number;
+  questions: string;
+  answer: boolean;
+}
+
+interface ITotal {
+  categoryName: string,
+  value: number;
+}
+
+interface IResult {
+  total: ITotal[];
+  currentValue: ICurrentValue;
+  currentIndex: number;
+  baseValue: ICurrentValue;
+}
 
 function Layout() {
+  // TODO: restructure layout and seperate the feature of file upload and decryptor
+
   const { showAlert, showUploadFileResult, updateShowUploadFileResult } = useStoreContext();
   const { show, color, title, message } = showAlert
   const [ file, setFile ] = useState<File | null>(null)
   const [ cypherText, setCypherText ] = useState('')
-  const [ bpiResult, setBpiResult ] = useState({})
+  const [ bpiResult, setBpiResult ] = useState<any>({})
 
   function onFileUpload(event: React.ChangeEvent<HTMLInputElement>) {
     const file: any = event.target.files;
@@ -30,20 +52,44 @@ function Layout() {
     }
   }
 
-  function calculate() {
+  function calculate(result: ICurrentValue[]) {
+    let initialValue = Object.keys(CLINICAL_SCALES).reduce<any>((total, currentValue, currentIndex, baseValue) => {
+      total[currentValue] = 0
 
+      return total;
+    }, {})
+
+    let newResult = result.reduce<any>((total, currentValue, currentIndex, baseValue) => {
+      const {index, answer, questions} = currentValue;
+
+      Object.entries(CLINICAL_SCALES).forEach(([categoryName, {_true, _false}]: any) => {
+        if (_true.includes(index) && answer === true) total[categoryName]++
+        if (_false ? _false.includes(index) : false && answer === false) total[categoryName]++
+      });
+      
+      return total;
+    }, initialValue)
+
+    return newResult
   }
 
-  function showResult () {
+  async function showResult () {
     const password: any = window.prompt("Enter password", "");
 
-    if (password !== '123') window.alert("Incorrect password")
+    if (password !== process.env.REACT_APP_PASSPHASE) window.alert("Incorrect password")
  
     if (password && cypherText) {
       const bytes = CryptoJS.AES.decrypt(cypherText, password);
       const originalText = bytes.toString(CryptoJS.enc.Utf8);
-      setBpiResult(JSON.parse(originalText))
-      console.table(bpiResult)
+      
+      let finalResult = calculate(JSON.parse(originalText))
+      
+      const worksheet: any = await XLSX.utils.json_to_sheet([finalResult]);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "BPI Result");
+      const [ fileName, _ ]: any = file?.name.split(".");
+      XLSX.writeFile(workbook, `${fileName}.xlsx`, { compression: true });
+
     } else {
       window.alert("Enter password and upload file")
     }
@@ -55,7 +101,7 @@ function Layout() {
         <p>{file?.name}</p>
         <InputFile onChange={(event: any) => onFileUpload(event)} />
         <div className="grid grid-cols-2">
-          <button type="button" className="text-slate-100 bg-slate-900 p-2 px-4 rounded-lg justify-self-start" onClick={showResult}>Show result</button>
+          <button type="button" className="text-slate-100 bg-slate-900 p-2 px-4 rounded-lg justify-self-start" onClick={showResult}>Download result</button>
           <button type="button" className="justify-self-end text-slate-900 border border-lg border-slate-900 bg-slate-100 p-2 px-4 rounded-lg" onClick={updateShowUploadFileResult}>Close</button>
         </div>
       </Modal>
