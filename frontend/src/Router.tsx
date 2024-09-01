@@ -8,11 +8,13 @@ import { CSSTransition, SwitchTransition } from 'react-transition-group'
 
 import Welcome from './Pages/Welcome/Welcome'
 import Questionaire from './Pages/Questionaire/Questionaire'
+import QuestionaireNew from './Pages/QuestionaireNew/QuestionaireNew'
 import NotFound from './NotFound'
 
 const routes = [
   { path: '/', name: 'Welcome', element: <Welcome />, nodeRef: createRef() },
   { path: '/questionaire/:id', name: 'Questionaire', element: <Questionaire />, nodeRef: createRef() },
+  { path: '/questionaire-new/:query', name: 'QuestionaireNew', element: <QuestionaireNew />, nodeRef: createRef() },
   { path: '*', name: 'Not Found', element: <NotFound />, nodeRef: createRef() }
 ]
 

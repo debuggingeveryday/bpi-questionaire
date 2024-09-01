@@ -9,6 +9,10 @@ export const findById = (id: number) => {
   return getAllQuestionaire.find((item: any) => item.id === id) || {}
 }
 
+export const queryData = ((offset: number, limit: number) => {
+  return getAllQuestionaire.filter((item: any) => item.id >= offset && item.id <= limit) || {}
+})
+
 /* -- answer -- */
 export const answerQuestionaire = (id: number, value: boolean) => {
   if (!id) throw "no value"
