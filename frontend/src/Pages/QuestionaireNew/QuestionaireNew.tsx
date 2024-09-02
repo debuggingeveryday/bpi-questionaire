@@ -152,14 +152,14 @@ function Questionaire() {
   }
 
   return (
-    <div className="h-screen grid">
+    <div className="h-screen grid justify-center">
       {questionList && (
-        <div className="grid grid-cols-2">
-          {questionList.map(({id, questions, isDirty, answer}: any) => 
-            <div>
-              <p className="text-2xl">{questions}</p>
-              <button type="button" className="">True</button>
-              <button type="button">False</button>
+        <div className="grid grid-cols-1">
+          {questionList.map(({id, questions, isDirty, answer}: any, index: number) => 
+            <div key={index} className="flex text-2xl">
+              <p>{index + 1}. {questions}</p>
+              <button type="button" className="text-slate-900 bg-slate-100">True</button>
+              <button type="button" className="text-slate-900 bg-slate-100">False</button>
             </div>
           )}
         </div>
