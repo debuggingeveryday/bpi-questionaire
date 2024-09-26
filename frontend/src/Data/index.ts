@@ -18,8 +18,8 @@ export const loadQuestionaire = () => {
 }
 
 export const initialize = () => {
-    if (!localStorage.getItem("questionaire"))
-      localStorage.setItem("questionaire", JSON.stringify(loadQuestionaire()))
+  if (!localStorage.getItem("questionaire"))
+    localStorage.setItem("questionaire", JSON.stringify(loadQuestionaire()))
 }
 
 export const migrateFresh = () => {

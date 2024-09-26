@@ -18,12 +18,12 @@ export const answerQuestionaire = (id: number, value: boolean) => {
   if (!id) throw "no value"
 
   let newData: any = findById(id)
-  
+
   newData.answer = value
   newData.isDirty = true
 
   newData = [...new Set([newData, ...getAllQuestionaire])].sort((a, b) => a.id - b.id)
-  
+
   updateQuestionaire(newData)
 }
 
