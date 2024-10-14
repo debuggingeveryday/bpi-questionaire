@@ -1,14 +1,19 @@
 /* TODO: seperate state and function by it's purposes */
 
-import { createContext, useContext, useState, useEffect } from 'react';
-import { getAllQuestionaire, answerQuestionaire, statusQuestionaire, resetQuestionaire } from "../Data/questionaire"
+import { createContext, useContext, useState, useEffect } from "react";
+import {
+  getAllQuestionaire,
+  answerQuestionaire,
+  statusQuestionaire,
+  resetQuestionaire,
+} from "../Data/questionaire";
 
 const SHOW_ALERT = {
   show: false,
-  color: '',
-  title: '',
-  message: ''
-}
+  color: "",
+  title: "",
+  message: "",
+};
 
 interface IShowAlert {
   show?: boolean;
@@ -31,9 +36,9 @@ interface IStoreContext {
   resetQuestion: () => void;
 
   // Skipped answer collector
-  skipAnswer: Array<number>,
-  updateSkipAnswer: (value: number) => void
-  
+  skipAnswer: Array<number>;
+  updateSkipAnswer: (value: number) => void;
+
   // Upload file test and decrypt
   showUploadFileResult: boolean;
   updateShowUploadFileResult: () => void;
@@ -58,44 +63,43 @@ export const StoreContext = createContext<IStoreContext>({
 
   // Upload file test and decrypt
   showUploadFileResult: false,
-  updateShowUploadFileResult: () => {}
+  updateShowUploadFileResult: () => {},
 });
 
-export default function Store({children}: {children: any}) {
-  const [ showAlert, setShowAlert ] = useState({})
-  const [ question, setQuestion ] = useState(getAllQuestionaire)
-  const [ statusQuestion, setStatusQuestion ] = useState(statusQuestionaire(question))
-  const [ skipAnswer, setSkipAnswer ] = useState<Array<number>>([])
-  const [ showUploadFileResult, setShowUploadFileResult ] = useState(false)
+export default function Store({ children }: { children: any }) {
+  const [showAlert, setShowAlert] = useState({});
+  const [question, setQuestion] = useState(getAllQuestionaire);
+  const [statusQuestion, setStatusQuestion] = useState(
+    statusQuestionaire(question)
+  );
+  const [skipAnswer, setSkipAnswer] = useState<Array<number>>([]);
+  const [showUploadFileResult, setShowUploadFileResult] = useState(false);
 
   useEffect(() => {
     //console.log(findById(1))
-  }, [])
-  
+  }, []);
 
   const updateShowAlert = (value: IShowAlert) => {
-    setShowAlert(value)
+    setShowAlert(value);
 
     setTimeout(() => {
-      setShowAlert(SHOW_ALERT)
+      setShowAlert(SHOW_ALERT);
     }, 3000);
-  }
+  };
 
-  const updateQuestion = () => {
-    
-  }
+  const updateQuestion = () => {};
 
   const answerQuestion = (id: number, value: boolean) => {
-    answerQuestionaire(id, value)
-  }
+    answerQuestionaire(id, value);
+  };
 
   const updateStatusQuestion = () => {
-    setStatusQuestion(statusQuestionaire(question))
-  }
+    setStatusQuestion(statusQuestionaire(question));
+  };
 
   const updateShowUploadFileResult = () => {
-    setShowUploadFileResult(!showUploadFileResult)
-  }
+    setShowUploadFileResult(!showUploadFileResult);
+  };
 
   const resetQuestion = () => {
     setQuestion((prev: any) => {
@@ -103,26 +107,25 @@ export default function Store({children}: {children: any}) {
         item.isDirty = false;
         item.answer = false;
 
-        return item
-      })
+        return item;
+      });
 
-      return oldData
-    })
+      return oldData;
+    });
 
-    setStatusQuestion(statusQuestionaire(question))
-    resetQuestionaire()
-
-  }
+    setStatusQuestion(statusQuestionaire(question));
+    resetQuestionaire();
+  };
 
   const updateSkipAnswer = (value: number) => {
-    setSkipAnswer(prev => [...prev, value])
-  }
+    setSkipAnswer((prev) => [...prev, value]);
+  };
 
   const storeState = {
     // Alert
     showAlert,
     updateShowAlert,
-    
+
     // Questionaire
     question,
     updateQuestion,
@@ -136,14 +139,12 @@ export default function Store({children}: {children: any}) {
     updateSkipAnswer,
 
     showUploadFileResult,
-    updateShowUploadFileResult
-  }
+    updateShowUploadFileResult,
+  };
 
   return (
-    <StoreContext.Provider value={storeState}>
-      {children}
-    </StoreContext.Provider>
-  )
+    <StoreContext.Provider value={storeState}>{children}</StoreContext.Provider>
+  );
 }
 
 export const useStoreContext = () => useContext(StoreContext);
