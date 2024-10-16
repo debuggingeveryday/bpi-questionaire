@@ -1,4 +1,5 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect, Fragment, useMemo } from "react";
+import { useLocalStorage } from "@uidotdev/usehooks";
 import {
   useParams,
   Link,
@@ -21,7 +22,33 @@ const STYLE_CLASS = {
   nonActiveButton: "bg-white text-slate-900",
 };
 
+interface IQuestionaires {
+  id: number;
+  questions: string;
+  answer: boolean;
+  isDirty: boolean;
+  length: number;
+  filter: any;
+}
+
 function Questionaire() {
+  const [questionaire, setQuestionaire]: any = useLocalStorage(
+    "questionaire",
+    null
+  );
+
+  const { total, countAnswered } = useMemo(() => {
+    let total = questionaire.length;
+    let countAnswered = questionaire.filter(
+      (item: IQuestionaires) => item.isDirty === true
+    ).length;
+
+    return {
+      total,
+      countAnswered,
+    };
+  }, [questionaire]);
+
   let { offset, limit }: any = useParams();
   const navigate = useNavigate();
   const [questionList, setQuestionList] = useState<any>([]);
@@ -42,7 +69,7 @@ function Questionaire() {
   const [status, setStatus] = useState(statusQuestion);
 
   useEffect(() => {
-    if (statusQuestion.countAnswered >= statusQuestion.total) {
+    if (countAnswered >= total) {
       updateShowAlert({
         show: true,
         color: "bg-green-400",
@@ -52,7 +79,7 @@ function Questionaire() {
 
       setShowExport(true);
     }
-  }, [statusQuestion]);
+  }, [countAnswered]);
 
   useEffect(() => {
     if (offset <= 1) setVisibile({ ...visible, showBack: false });
@@ -112,7 +139,7 @@ function Questionaire() {
     const blob = new Blob([encryptedData], {
       type: "text/plain;charset=utf-8",
     });
-    const fileName = `${month}${day}${year}${hour}${minutes}${seconds}_bpi-result.txt`;
+    const fileName = `${month}${day}${year}${hour}${minutes}${seconds}_bpi-result.bpi`;
     saveAs(blob, fileName);
 
     updateShowAlert({
@@ -146,14 +173,20 @@ function Questionaire() {
 
   return (
     <div className="h-screen grid grid-cols-1 justify-items-center content-center">
-      <div className="flex justify-self-start space-x-2">
-        <Link className="ml-5 hover:underline flex justify-self-start" to={"/"}>
-          <FaHome className="mt-1 mr-1" />
-          Home
-        </Link>
-        <p className="justify-self-end">
-          from: {offset} to: {limit} total: {statusQuestion.total}
-        </p>
+      <div className="w-full grid grid-cols-1 mx-16">
+        <div className="grid grid-flow-col space-x-2">
+          <Link
+            className="ml-5 hover:underline flex justify-self-start"
+            to={"/"}
+          >
+            <FaHome className="mt-1 mr-1" />
+            Home
+          </Link>
+          <p className="justify-self-end">
+            {`From: ${offset} To: ${limit} Total: ${statusQuestion.total}
+          Total answered: ${countAnswered}`}
+          </p>
+        </div>
       </div>
       {questionList && (
         <div className="w-3/5 grid grid-cols-1">
