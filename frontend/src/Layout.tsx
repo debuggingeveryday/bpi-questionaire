@@ -40,7 +40,9 @@ function Layout() {
   function onFileUpload(event: React.ChangeEvent<HTMLInputElement>) {
     const file: any = event.target.files;
 
-    if (file[0].type !== "text/plain") return window.alert("Invalid file type");
+    const [name, extension] = file[0].name.split('.');
+
+    if (extension !== "bpi") return window.alert("Invalid file type");
 
     if (file) {
       let reader: any = new FileReader();

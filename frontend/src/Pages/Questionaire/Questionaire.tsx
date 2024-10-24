@@ -217,7 +217,7 @@ function Questionaire() {
               ({ id, questions, isDirty, answer }: any, index: number) => (
                 <div
                   key={index}
-                  className="flex text-1xl mb-5 justify-self-end"
+                  className="flex text-1xl mb-5"
                 >
                   <div className="grow">
                     <p>
