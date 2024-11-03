@@ -83,7 +83,8 @@ function Layout() {
             if (_true.includes(index) && answer === true) {
               total[categoryIndex].count++;
             }
-            if (_false ? _false.includes(index) : false && answer === false) {
+            
+            else if (categoryName !== 'DEVIATON' && _false.includes(index) && answer === false) {
               total[categoryIndex].count++;
             }
           }
@@ -113,6 +114,8 @@ function Layout() {
           JSON.parse(originalText)
         );
 
+        console.log(finalResult, answeredCollection)
+
         const worksheetFinalResult: any = await XLSX.utils.json_to_sheet(
           finalResult
         );
@@ -133,6 +136,7 @@ function Layout() {
         const [fileName, _]: any = file?.name.split(".");
         XLSX.writeFile(workbook, `${fileName}.xlsx`, { compression: true });
       } catch (error) {
+        console.log(error)
         window.alert("Invalid format file");
       }
     }

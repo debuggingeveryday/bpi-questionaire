@@ -15,8 +15,8 @@ export const DENIAL = {
 }
 
 export const INTERPERSONAL_PROBLEMS = {
-  _true: [16,40,64,88,112,136,160,184,208,232],
-  _false: [4,28,52,76,100,124,148,172,196,220]
+  _true: [4,28,52,76,100,124,148,172,196,220],
+  _false: [16,40,64,88,112,136,160,184,208,232]
 }
 
 export const ALIENATION = {
